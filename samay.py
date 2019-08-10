@@ -122,4 +122,3 @@ class Samay:
 		return self.mtime == other.mtime
 	def __lt__(self,other):
 		return self.mtime < other.mtime
-
