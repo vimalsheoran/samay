@@ -6,7 +6,7 @@ class samay:
                 if mtime != None:
                         if isinstance(mtime,str):
                             mtime=re.sub('T.*Z','',mtime)
-                        if isinstance(mtime,datetime):
+                        elif isinstance(mtime,datetime):
                                 self.mtime = mtime
                         elif isinstance(mtime,int):
                                 try:
