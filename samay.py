@@ -1,36 +1,41 @@
 from datetime import datetime,timedelta
 import re
-class samay:
 
-        def __init__(self,mtime=None):
-                if mtime != None:
-                        if isinstance(mtime,str):
-                            mtime=re.sub('T.*Z','',mtime)
-                        elif isinstance(mtime,datetime):
-                                self.mtime = mtime
-                        elif isinstance(mtime,int):
-                                try:
-                                        if len(str(mtime)) > 10:
-                                                self.mtime = datetime.fromtimestamp(mtime//1000)
-                                        else:
-                                                self.mtime = datetime.fromtimestamp(mtime)
-                                except:
-                                        print('Argument must be of epoc time')
-                        else:
-                                try:
-                                        Checkermtime = mtime.split(":")
-                                        if len(Checkermtime)==2:
-                                                self.mtime = datetime.strptime(mtime,"%Y-%m-%d %H:%M")
-                                        elif len(Checkermtime)==3:
-                                                self.mtime = datetime.strptime(mtime,"%Y-%m-%d %H:%M:%S")
-                                except Exception as e:
-                                        print('Argument must be of format YYYY-MM-DD HH:mm')
+class Samay:
+
+        def __init__(self, mtime=None):
+            if mtime == None:
+                self.mtime = datetime.now()
+            else:
+                self.mtime = mtime
+            if not self.mtime:
+                raise Exception("Argument must be an instance of date time.")
+
+        @classmethod
+        def from_str(cls, mtime):
+            mtime = re.sub("T.*Z", "", mtime)
+            return cls(mtime)
+
+        @classmethod
+        def from_int(cls, mtime):
+            try:
+                if len(str(mtime)) > 10:
+                    mtime = mtime//1000
+                return cls(datetime.fromtimestamp(mtime))
+            except:
+                print("Argument must be of EPOC time.")
+
+        @classmethod
+        def from_format(cls, mtime):
+            try:
+                f_mtime = mtime.split(":")
+                if len(f_mtime) == 2:
+                    mtime = datetime.strptime(mtime, "%Y-%m-%d %H:%M")
                 else:
-                        self.mtime = datetime.now()
-
-                if not self.mtime:
-                    raise Exception('Argument must be instance of datetime')
-
+                    mtime = datetime.strptime(mtime, "%Y-%m-%d %H:%M:%S")
+                return cls(mtime)
+            except:
+                print("Argument must be of format YYYY-MM-DD HH:mm:ss or YYYY-MM-DD HH:mm")
 
         def startOf(self,arg):
 
